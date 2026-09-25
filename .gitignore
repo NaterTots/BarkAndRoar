@@ -1,0 +1,10 @@
+.godot/
+.tools/
+build/
+node_modules/
+test-results/
+*.tmp
+# Local assignment includes family information; keep it out of the public repo.
+BarkAndRoar_Codex_Build_Directions.md
+__pycache__/
+.venv/

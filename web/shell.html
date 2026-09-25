@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#b9d7cc">
+<title>BarkAndRoar</title>
+<style>
+html,body { margin:0; width:100%; height:100%; overflow:hidden; background:#b9d7cc; }
+body { font-family:system-ui,sans-serif; color:#382d32; }
+#stage { position:fixed; inset:0; height:100vh; height:100dvh; box-sizing:border-box; padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); }
+canvas { display:block; width:100%; height:100%; touch-action:none; user-select:none; -webkit-user-select:none; -webkit-touch-callout:none; outline:none; }
+#status { position:fixed; inset:0; display:grid; place-content:center; text-align:center; padding:32px; background:#f9eedc; }
+#status p { max-width:30em; line-height:1.5; }
+progress { width:220px; margin:auto; accent-color:#745046; }
+</style>
+$GODOT_HEAD_INCLUDE
+</head>
+<body>
+<div id="stage"><canvas id="canvas" tabindex="0" aria-label="BarkAndRoar. Tap to play, then touch the lion or dog.">This toy needs a browser with canvas support.</canvas></div>
+<div id="status" role="status"><p id="notice">Waking up our animal friends…</p><progress id="progress"></progress></div>
+<noscript>This toy needs JavaScript enabled.</noscript>
+<script src="$GODOT_URL"></script>
+<script>
+const canvas = document.getElementById('canvas');
+const config = $GODOT_CONFIG;
+config.canvas = canvas;
+config.canvasResizePolicy = 0;
+const engine = new Engine(config);
+const overlay = document.getElementById('status');
+function resize() {
+  const r = canvas.getBoundingClientRect();
+  // One render pixel per CSS pixel keeps the small 2D toy light on iPads.
+  canvas.width = Math.max(1, Math.round(r.width));
+  canvas.height = Math.max(1, Math.round(r.height));
+}
+new ResizeObserver(resize).observe(canvas);
+resize();
+function suspend() { if (window.barkReset) window.barkReset(); }
+window.addEventListener('blur', suspend);
+window.addEventListener('pagehide', suspend);
+document.addEventListener('visibilitychange', () => { if (document.hidden) suspend(); });
+canvas.addEventListener('contextmenu', e => e.preventDefault());
+canvas.addEventListener('touchmove', e => e.preventDefault(), {passive:false});
+canvas.addEventListener('pointerdown', e => { try { canvas.setPointerCapture(e.pointerId); } catch (_) {} });
+canvas.addEventListener('pointercancel', suspend);
+function failure(error) {
+  overlay.style.display = 'grid';
+  document.getElementById('progress').hidden = true;
+  document.getElementById('notice').textContent = 'The animals could not wake up. Reload this page in an up-to-date Safari or Chrome browser. This toy needs WebGL 2 and WebAssembly. Details: ' + String(error);
+}
+const missing = Engine.getMissingFeatures({threads:false});
+if (missing.length) failure(missing.join(', '));
+else engine.startGame({onProgress(current,total) {
+  if (total) { const p = document.getElementById('progress'); p.max = total; p.value = current; }
+}}).then(() => { overlay.style.display = 'none'; resize(); canvas.focus(); }).catch(failure);
+</script>
+</body>
+</html>

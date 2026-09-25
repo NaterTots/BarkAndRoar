@@ -1,0 +1,60 @@
+name: Deploy BarkAndRoar
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+env:
+  GODOT_VERSION: 4.7.2
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - name: Install pinned Godot and matching templates
+        shell: bash
+        run: |
+          set -euo pipefail
+          base="https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-stable"
+          curl -fL --retry 3 "$base/Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip" -o /tmp/godot.zip
+          curl -fL --retry 3 "$base/Godot_v${GODOT_VERSION}-stable_export_templates.tpz" -o /tmp/templates.zip
+          curl -fL --retry 3 "$base/SHA512-SUMS.txt" -o /tmp/SHA512-SUMS.txt
+          python3 tools/verify_downloads.py /tmp/SHA512-SUMS.txt /tmp/godot.zip "Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip" /tmp/templates.zip "Godot_v${GODOT_VERSION}-stable_export_templates.tpz"
+          unzip -q /tmp/godot.zip -d /tmp/godot
+          mv /tmp/godot/Godot* /usr/local/bin/godot
+          mkdir -p "$HOME/.local/share/godot/export_templates/${GODOT_VERSION}.stable"
+          unzip -q /tmp/templates.zip 'templates/web_*' -d /tmp/templates
+          mv /tmp/templates/templates/* "$HOME/.local/share/godot/export_templates/${GODOT_VERSION}.stable/"
+          godot --version
+      - name: Import, test and export
+        run: |
+          godot --headless --path . --editor --import
+          godot --headless --path . --script tests/pointers_test.gd
+          mkdir -p build/web
+          godot --headless --path . --export-release Web build/web/index.html
+          touch build/web/.nojekyll
+      - uses: actions/configure-pages@v6.0.0
+      - uses: actions/upload-pages-artifact@v5.0.0
+        with:
+          path: build/web
+  deploy:
+    needs: build
+    runs-on: ubuntu-24.04
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v5.0.1
