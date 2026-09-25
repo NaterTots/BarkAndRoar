@@ -11,8 +11,9 @@ All assets are bundled; the running toy makes no requests to asset providers.
 [CC0 legal terms](https://creativecommons.org/publicdomain/zero/1.0/legalcode).
 The sound-processing recipe is in `tools/prepare_audio.py`. The two clips peak at
 no more than 0.44 before the player's additional -3 dB gain; even simultaneous
-full-scale peaks leave mixing headroom. Perceived friendliness and balance still
-need a human listening check; numerical measurements cannot establish those.
+full-scale peaks leave mixing headroom. The parent accepted the revised clips on
+the target iPad on 2026-09-25. This listening result is separate from the numerical
+checks; waveform measurements alone cannot establish perceived sound quality.
 
 The early build used Brandon Morris (HaelDB)'s CC0
 [Dog barking mono](https://opengameart.org/content/dog-barking-mono). It was replaced

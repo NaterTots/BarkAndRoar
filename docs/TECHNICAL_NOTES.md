@@ -34,6 +34,7 @@ isolated recording. The roar edit now preserves its whole onset and release,
 time-compressed without changing pitch. Lighter filtering and no waveshaping
 preserve vocal character. `tools/audio-requirements.txt` pins the optional audio
 processing tools; they are not needed to build or run the committed game assets.
+The parent rechecked that revision on the iPad and accepted the sounds as “perfect.”
 
 ## Input and layout
 

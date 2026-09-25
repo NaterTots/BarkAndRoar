@@ -12,7 +12,7 @@
       "check": "First animal tap 0: exactly one activation and nonzero audio output",
       "result": "pass",
       "details": {
-        "peak": 0.25067138671875,
+        "peak": 0.311676025390625,
         "states": [
           "running"
         ]

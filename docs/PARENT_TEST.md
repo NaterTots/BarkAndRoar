@@ -2,8 +2,8 @@
 
 Target supplied for this check: **iPad (A16), iPadOS 26.5, Safari**.
 The parent confirmed basic taps and sound work on this device on 2026-09-25.
-The initial bark/roar needed improvement and have been revised; the new clips
-and the full stability/lifecycle checklist below still need a device check.
+The initial bark/roar were revised, then accepted by the parent as “perfect.”
+Steps 1–2 are accepted; **steps 3–7** below remain pending on the actual device.
 
 1. On the iPad, open Safari and enter **https://natertots.github.io/BarkAndRoar/**.
    Set device volume low but audible. Wait until both faces and the large play
