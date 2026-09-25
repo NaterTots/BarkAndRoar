@@ -20,8 +20,23 @@ $GODOT_HEAD_INCLUDE
 <div id="stage"><canvas id="canvas" tabindex="0" aria-label="BarkAndRoar. Tap to play, then touch the lion or dog.">This toy needs a browser with canvas support.</canvas></div>
 <div id="status" role="status"><p id="notice">Waking up our animal friends…</p><progress id="progress"></progress></div>
 <noscript>This toy needs JavaScript enabled.</noscript>
+<script>
+function failure(error) {
+  document.getElementById('status').style.display = 'grid';
+  document.getElementById('progress').hidden = true;
+  document.getElementById('notice').textContent = 'The animals could not wake up. Reload this page in an up-to-date Safari or Chrome browser. This toy needs WebGL 2, WebAssembly and Web Audio. Details: ' + String(error);
+}
+// Some engine fetch failures surface outside startGame's returned promise.
+window.addEventListener('unhandledrejection', event => failure(event.reason));
+window.addEventListener('error', event => {
+  if (event.message) failure(event.message);
+});
+</script>
 <script src="$GODOT_URL"></script>
 <script>
+if (typeof Engine === 'undefined') {
+  failure('The game engine did not download. Check your internet connection and reload.');
+} else {
 const canvas = document.getElementById('canvas');
 const config = $GODOT_CONFIG;
 config.canvas = canvas;
@@ -44,16 +59,13 @@ canvas.addEventListener('contextmenu', e => e.preventDefault());
 canvas.addEventListener('touchmove', e => e.preventDefault(), {passive:false});
 canvas.addEventListener('pointerdown', e => { try { canvas.setPointerCapture(e.pointerId); } catch (_) {} });
 canvas.addEventListener('pointercancel', suspend);
-function failure(error) {
-  overlay.style.display = 'grid';
-  document.getElementById('progress').hidden = true;
-  document.getElementById('notice').textContent = 'The animals could not wake up. Reload this page in an up-to-date Safari or Chrome browser. This toy needs WebGL 2 and WebAssembly. Details: ' + String(error);
-}
 const missing = Engine.getMissingFeatures({threads:false});
+if (!(window.AudioContext || window.webkitAudioContext)) missing.push('Web Audio');
 if (missing.length) failure(missing.join(', '));
 else engine.startGame({onProgress(current,total) {
   if (total) { const p = document.getElementById('progress'); p.max = total; p.value = current; }
 }}).then(() => { overlay.style.display = 'none'; resize(); canvas.focus(); }).catch(failure);
+}
 </script>
 </body>
 </html>

@@ -17,6 +17,7 @@ env:
 jobs:
   build:
     runs-on: ubuntu-24.04
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v7.0.1
       - name: Install pinned Godot and matching templates
@@ -41,6 +42,7 @@ jobs:
           mkdir -p build/web
           godot --headless --path . --export-release Web build/web/index.html
           touch build/web/.nojekyll
+          python3 -c 'import json,os,pathlib; pathlib.Path("build/web/build-info.json").write_text(json.dumps({"commit":os.environ["GITHUB_SHA"],"godot":os.environ["GODOT_VERSION"],"run":os.environ["GITHUB_RUN_ID"]}))'
       - uses: actions/configure-pages@v6.0.0
       - uses: actions/upload-pages-artifact@v5.0.0
         with:
@@ -48,6 +50,7 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-24.04
+    timeout-minutes: 10
     permissions:
       pages: write
       id-token: write

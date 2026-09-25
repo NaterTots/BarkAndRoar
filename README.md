@@ -66,6 +66,7 @@ Commit and push to `main`. [Deploy BarkAndRoar](https://github.com/NaterTots/Bar
 downloads the exact editor/templates, checks SHA512 hashes against the release
 manifest, imports, runs pointer tests, exports `index.html`, uploads the complete
 Pages artifact, and deploys it. The repository uses the GitHub Actions Pages source.
+The deployed `build-info.json` identifies the exact commit and workflow run.
 The workflow also supports manual dispatch. Build output and local tools are ignored.
 
 See [asset credits](ASSET_CREDITS.md) for audio sources and processing, and

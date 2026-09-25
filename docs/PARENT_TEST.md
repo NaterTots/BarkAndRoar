@@ -27,6 +27,9 @@ This device has not been remotely tested. Desktop automation cannot replace it.
 
 Reply with: **test date, iPadOS version, minutes tested, whether both first taps
 made sound, whether the clips sound friendly/balanced, and any failed step**.
-Include the build/commit listed in `status.md`. If a failure occurs, describe the
+The exact live build/commit is also available at
+**https://natertots.github.io/BarkAndRoar/build-info.json**; copy its `commit` value
+into your reply if the build has changed since the checklist was sent.
+If a failure occurs, describe the
 smallest sequence that reproduces it and whether reloading fixes it. No account,
 token, installation, or GitHub settings change is needed.

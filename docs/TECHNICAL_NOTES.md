@@ -42,3 +42,19 @@ Resize clears ownership. The shell uses dynamic viewport height, safe-area paddi
 canvas-scoped gesture suppression, and manual one-CSS-pixel canvas sizing. Engine
 paths remain relative for project Pages hosting. Loading and initialization errors
 are parent readable. No service worker is registered.
+
+## Validation limitations
+
+Chromium 153.0.8010.12 / Playwright 1.63.0 on Windows passed the recorded desktop
+and emulated-touch checks. Audio analysis observes nonzero samples on the actual
+engine output graph; it does not establish perceived sound quality or physical
+speaker output. The test probe exists only in the automation script.
+
+Playwright's Windows WebKit 26.6 build exposed no AudioContext or
+webkitAudioContext, and an exploratory game run emitted framebuffer errors.
+It cannot provide audio acceptance here and is not recorded as a Safari pass.
+The final shell displays a readable unsupported-Web-Audio message for that build.
+Headless Chromium pages do not reproduce actual tab visibility transitions in
+this environment; lifecycle tests dispatch synthetic focus/visibility events.
+Actual Safari toolbar changes, backgrounding, screen lock, and sustained playback
+must be checked on the target iPad.
