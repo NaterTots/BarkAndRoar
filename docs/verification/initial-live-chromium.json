@@ -1,0 +1,75 @@
+{
+  "url": "https://natertots.github.io/BarkAndRoar/",
+  "browser": "chromium",
+  "version": "153.0.8010.12",
+  "checks": [
+    {
+      "check": "Fresh load silent; play gesture enters toy without an animal activation",
+      "result": "pass",
+      "details": null
+    },
+    {
+      "check": "First animal tap 0: exactly one activation and nonzero audio output",
+      "result": "pass",
+      "details": {
+        "peak": 0.19287109375,
+        "states": [
+          "running"
+        ]
+      }
+    },
+    {
+      "check": "First animal tap 1: exactly one activation and nonzero audio output",
+      "result": "pass",
+      "details": {
+        "peak": 0.2978515625,
+        "states": [
+          "running"
+        ]
+      }
+    },
+    {
+      "check": "Panel edge mouse press, clamped cross-divider drag, outside-panel release",
+      "result": "pass",
+      "details": null
+    },
+    {
+      "check": "Two simultaneous touch/audio reactions; third finger ignored; independent cross-divider capture",
+      "result": "pass",
+      "details": null
+    },
+    {
+      "check": "Browser touch cancellation clears ownership",
+      "result": "pass",
+      "details": null
+    },
+    {
+      "check": "Rapid taps animate each time with one player per animal and no queued audio",
+      "result": "pass",
+      "details": null
+    },
+    {
+      "check": "Rotation during drag resets ownership; portrait top/bottom edge hit targets align",
+      "result": "pass",
+      "details": null
+    },
+    {
+      "check": "Four portrait/landscape viewport screenshots; no required page scrolling",
+      "result": "pass",
+      "details": null
+    },
+    {
+      "check": "Simulated focus loss stops audio and gates play; next gestures restore nonzero audio",
+      "result": "pass",
+      "details": null
+    },
+    {
+      "check": "No JavaScript/application console errors or HTTP asset failures",
+      "result": "pass",
+      "details": null
+    }
+  ],
+  "errors": [],
+  "failed_requests": [],
+  "limitations": "Emulation only. Human listening, actual Safari toolbar/lock and 15\u201330 minute iPad stability remain pending."
+}

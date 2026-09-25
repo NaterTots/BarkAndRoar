@@ -9,6 +9,8 @@ can play together. Turn the iPad upright to stack the animals.
 No accounts, ads, analytics, music, backend, external asset requests or installation.
 Internet is needed to load the game; no offline/PWA caching is installed.
 
+![Landscape play screen](docs/screenshots/landscape.png)
+
 ## Open on an iPad
 
 Open **https://natertots.github.io/BarkAndRoar/** in Safari. Set a comfortable device

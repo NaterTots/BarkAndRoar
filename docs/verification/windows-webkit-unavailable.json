@@ -1,0 +1,8 @@
+{
+  "url": "http://127.0.0.1:8765/",
+  "browser": "webkit",
+  "version": "26.6",
+  "result": "unavailable",
+  "reason": "This browser build exposes neither AudioContext nor webkitAudioContext. It cannot validate required audio.",
+  "console_errors": []
+}

@@ -127,6 +127,7 @@ with sync_playwright() as p:
 
         touch('touchStart', [(1, 250, 380), (2, 780, 380)])
         expect('window.barkState.owners === 2 && window.barkState.animals.every(a=>a.held && a.audio)')
+        page.screenshot(path=str(OUT / 'both-reacting.png'))
         before = [a['activations'] for a in state()['animals']]
         touch('touchStart', [(1, 250, 380), (2, 780, 380), (3, 50, 50)])
         s = state()
