@@ -1,35 +1,42 @@
-"""Reproduce the bundled edits. Requires numpy, scipy and soundfile.
+﻿"""Reproduce bundled edits (numpy, soundfile, imageio-ffmpeg).
 
-Download the two CC0 sources listed in ASSET_CREDITS.md to a temporary folder,
-then run: python tools/prepare_audio.py <dog_barking_mono.wav> <lion-hq.mp3>
+Download the two CC0 HQ sources in ASSET_CREDITS.md, then run:
+python tools/prepare_audio.py <single-dog-bark.mp3> <lion-hq.mp3>
 """
+import subprocess
 import sys
+import tempfile
 from pathlib import Path
+import imageio_ffmpeg
 import numpy as np
 import soundfile as sf
-from scipy.signal import butter, sosfilt, resample_poly
 
 
-def prepare(source, dest, start, duration, rms):
-    samples, rate = sf.read(source)
-    if samples.ndim == 2:
-        samples = samples.mean(axis=1)
-    samples = samples[round(start * rate):round((start + duration) * rate)]
-    samples = sosfilt(butter(2, [90, 4800], fs=rate, btype='bandpass', output='sos'), samples)
-    samples = resample_poly(samples, 320, 441) if rate == 44100 else samples
-    out_rate = 32000 if rate == 44100 else rate
-    # Gently tame the recording's isolated transient peaks before balancing.
-    level = max(np.sqrt(np.mean(samples**2)), 1e-9)
-    samples = np.tanh(samples / (level * 3.0))
-    fade_in, fade_out = round(.012 * out_rate), round(.09 * out_rate)
+def prepare(source, dest, start, end, tempo, rms, tail):
+    # Preserve vocal timbre: atempo changes duration without pitch shifting.
+    filters = (
+        f'atrim=start={start}:end={end},asetpts=PTS-STARTPTS,'
+        f'atempo={tempo},highpass=f=65,lowpass=f=7500,'
+        'acompressor=threshold=0.30:ratio=2:attack=5:release=55'
+    )
+    with tempfile.TemporaryDirectory() as temp:
+        edited = Path(temp) / 'edited.wav'
+        subprocess.run([
+            imageio_ffmpeg.get_ffmpeg_exe(), '-hide_banner', '-loglevel', 'error',
+            '-i', str(source), '-af', filters, '-ac', '1', '-ar', '32000',
+            '-c:a', 'pcm_f32le', str(edited),
+        ], check=True)
+        samples, rate = sf.read(edited)
+    fade_in, fade_out = round(.006 * rate), round(tail * rate)
     samples[:fade_in] *= np.linspace(0, 1, fade_in)
     samples[-fade_out:] *= np.linspace(1, 0, fade_out)
     samples *= min(rms / max(np.sqrt(np.mean(samples**2)), 1e-9), .44 / max(abs(samples)))
     Path(dest).parent.mkdir(parents=True, exist_ok=True)
-    sf.write(dest, samples, out_rate, subtype='PCM_16')
-    print(dest, f'{len(samples)/out_rate:.2f}s', 'peak', round(float(max(abs(samples))), 3), 'RMS', round(float(np.sqrt(np.mean(samples**2))), 3))
+    sf.write(dest, samples, rate, subtype='PCM_16')
+    print(dest, f'{len(samples)/rate:.3f}s', 'peak', round(float(max(abs(samples))), 3), 'RMS', round(float(np.sqrt(np.mean(samples**2))), 3))
 
 
 if __name__ == '__main__':
-    prepare(sys.argv[1], 'assets/audio/bark.wav', 0.0, .78, .10)
-    prepare(sys.argv[2], 'assets/audio/roar.wav', .35, 1.2, .09)
+    prepare(sys.argv[1], 'assets/audio/bark.wav', 0.0, .389, .90, .105, .025)
+    # Include the full onset and release, instead of slicing into the vowel.
+    prepare(sys.argv[2], 'assets/audio/roar.wav', .18, 1.82, 1.38, .10, .055)

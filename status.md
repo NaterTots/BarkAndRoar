@@ -2,7 +2,7 @@
 
 ## Milestones
 1. Platform and interaction: complete for desktop/emulated validation; early build deployed and browser-tested. Physical iPad acceptance pending.
-2. Toddler experience: implemented and Chromium behavior checks pass; human listening and physical-device acceptance pending.
+2. Toddler experience: implemented and Chromium behavior checks pass. Parent confirmed working taps/audio on the target iPad. Revised audio prepared in response to listening feedback; deployment and recheck in progress.
 3. Deployment and handoff: complete. GitHub Actions deployment, live-browser validation, asset fetches, README, credits, screenshots and parent checklist delivered. Only physical-device and listening acceptance remain open.
 
 ## Implemented / tested
@@ -29,11 +29,11 @@ Evidence: [final live Chromium results](docs/verification/live-chromium.json), [
 Local Godot editor and template SHA512 hashes verified against the official release manifest. CI independently verifies its downloads.
 
 ## Dependencies and next action
-The agent has no access to the physical iPad or human listening feedback. Parent supplied target: **iPad (A16), iPadOS 26.5**. No physical-device result has been received. Numerical audio checks passed, but recognizability, friendliness and perceived balance have not been confirmed by listening.
+Parent tested the early build on **iPad (A16), iPadOS 26.5**, on 2026-09-25 and confirmed that sounds and taps work. The parent reported the bark sounded like knocking on wood and requested a more defined roar. This establishes basic physical-device functionality, not full acceptance. Replacing the bark with a cleaner single-bark recording and revising the roar's articulation; updated listening acceptance remains pending. The exact early-build commit at the moment of the test was not recorded; its audio assets were unchanged through `78ad812`.
 
 1. On that iPad, open Safari at **https://natertots.github.io/BarkAndRoar/**, set a low audible volume, and tap the play triangle.
 2. Tap each animal and both together; confirm correct sound on each first tap, pleasant volume and no distortion.
 3. Follow [the exact parent checklist](docs/PARENT_TEST.md), including two fingers, dragging, rotation, Safari toolbar changes, app switching and screen lock/resume, then **15–30 minutes** of repeated interaction.
 4. Reply with the test date, iPadOS version, minutes tested, sound-quality result and any failed step. Include the commit from `build-info.json` if it differs from the validated commit above.
 
-No credentials, software installation or repository settings action is required. iPad compatibility and milestone 2's listening acceptance are **pending**, not claimed complete.
+No credentials, software installation or repository settings action is required. Basic iPad taps/audio are parent-confirmed; full physical-device stability and milestone 2's revised listening acceptance are **pending**, not claimed complete.

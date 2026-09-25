@@ -24,9 +24,16 @@ On focus loss, page hiding or touch cancellation, the web bridge clears ownershi
 stops both players and returns to the same play gate. The next real gesture can
 resume the audio context. No clips queue: taps animate while an active clip finishes.
 
-Clips are filtered and faded mono PCM, 0.78 seconds (bark) and 1.20 seconds (roar).
-Soft transient compression and conservative levels leave headroom. Automated
+Clips are filtered and faded mono PCM, 0.42 seconds (bark) and 1.20 seconds (roar).
+Gentle compression and conservative levels leave headroom. Automated
 audio-context/PCM checks are separate from human listening and speaker output.
+
+After an initial physical-iPad test confirmed taps/audio but described the bark as
+wooden and the roar as insufficiently defined, the bark was replaced with a clean
+isolated recording. The roar edit now preserves its whole onset and release,
+time-compressed without changing pitch. Lighter filtering and no waveshaping
+preserve vocal character. `tools/audio-requirements.txt` pins the optional audio
+processing tools; they are not needed to build or run the committed game assets.
 
 ## Input and layout
 
