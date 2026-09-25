@@ -1,9 +1,9 @@
 {
-  "date_utc": "2026-09-25T17:17:19.346792+00:00",
+  "date_utc": "2026-09-25T17:24:33.317271+00:00",
   "build": {
-    "commit": "5fb8ee7a8d68103881f459c3cc4b6d602ef15de6",
+    "commit": "2c6422ff0267d5384d8ff70f785e9e4a426e6ad1",
     "godot": "4.7.2",
-    "run": "36166001357"
+    "run": "36166733250"
   },
   "assets": [
     {
@@ -11,7 +11,7 @@
       "status": 200,
       "content_type": "text/html; charset=utf-8",
       "bytes": 4076,
-      "sha256": "45d76d0d0c9ed3e0d23367ffd9b824b5b30d8d25671737f4c86228b9d9727deb"
+      "sha256": "c0233ef32a100a1ebf8d73046856c537b26f0853cd96ec2b52b7148dd908a119"
     },
     {
       "file": "index.js",
@@ -31,8 +31,8 @@
       "file": "index.pck",
       "status": 200,
       "content_type": "application/octet-stream",
-      "bytes": 141212,
-      "sha256": "799a7c1f8cfca1b1ecddb6ffff8f02c056a41402548e8a08958744d8db122ae4"
+      "bytes": 136588,
+      "sha256": "a03a6faeee45a742c7112ad1cd2fbf60b5a9545a5e25320b97db3150a7298d1b"
     },
     {
       "file": "index.audio.worklet.js",
